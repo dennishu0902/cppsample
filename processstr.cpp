@@ -20,7 +20,7 @@ std::vector<std::string> WordsToVector(std::string str)
             substr.clear();
             findfirstone = false; //reset flag
         }
-        else
+        else 
         {
             findfirstone = true;
             substr.push_back(*it);//save char to string 
