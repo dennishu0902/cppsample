@@ -1,6 +1,7 @@
 #include <iostream>
-#include <string>
+#include <string> 
 #include <vector>
+
 using namespace std;
 std::vector<std::string> WordsToVector(std::string str);
 std::vector<std::string> WordsToVector(std::string str)
