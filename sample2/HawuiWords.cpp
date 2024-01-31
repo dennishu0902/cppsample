@@ -48,7 +48,7 @@ std::string GetPronunciation(const std::string& hawaiian_word)
 }
 bool IsValidWord(const std::string& word)
 {
-    int i=0;
+    unsigned long i=0;
     if(word.size()==0) return false;
     //check each char if valid
     for(i=0; i< word.size(); i++)
@@ -60,7 +60,7 @@ bool IsValidWord(const std::string& word)
 //a, e, i, o, u, p, k, h, l, m, n, and  '
 bool IsValidCharacter(const char& c)
 {   
-    int i;
+    unsigned long i;
     std::string validch="aeioupkhlmnw'";
     //check if can find the input char in the group of validch
     for(i=0;i<validch.size();i++)
@@ -72,7 +72,7 @@ bool IsValidCharacter(const char& c)
 //a e i o u
 bool IsVowel(const char& v)
 {
-    int i;
+    unsigned long i;
     std::string validvowel="aeiou";
     //check if can find the input char in the group of validvowel
     for(i=0;i<validvowel.size();i++)
@@ -84,21 +84,22 @@ bool IsVowel(const char& v)
 //ai ae ao au ei eu iu oi ou ui
 bool IsVowelGroup(const char& v1, const char& v2)
 {
-    int i;
-    std::string validvowelgrp="aiaeaoaueieuiuoiouui";
-    //check if can find the input char in the group of validvowelgrp
-    //The adjacement two char is a vowelgrp
-    //For eaxmple,  ai ae ao .... 
-    for(i=0;i<validvowelgrp.size();i=i+2)
-    {
-        if((v1 == validvowelgrp[i]) && (v2 == validvowelgrp[i+1])) return true;
-    }
-    return false; 
+    // use vector and string compare
+    std::string str1;
+    std::vector<std::string> vowgrp={"ai","ae", "ao", "au", "ei", "eu", "iu", "oi", "ou", "ui" };
+    unsigned long i;
+   
+    str1.push_back(v1);
+    str1.push_back(v2);
+    for(i=0; i< vowgrp.size(); i++)
+      if(str1 == vowgrp[i]) return true;
+    return false;    
+    
 }
 ///p, k, h, l, m, n, w
 bool IsConsonant(const char& c)
 {
-    int i;
+    unsigned long i;
     std::string validvowel="pkhlmnw";
     for(i=0;i<validvowel.size();i++)
     {
@@ -112,11 +113,6 @@ std::string StringToLower(const std::string& word)
     std::string lowerstr;
     for(i=0; i< word.size();i++)
     {
-       /*  write a tolower code or call tolower 
-        if(word[i]>='A' && word[i] <='Z') 
-           lowerstr.push_back((word[i] - 'A') + 'a');
-        else
-           lowerstr.push_back(word[i]); */
        lowerstr.push_back(std::tolower(word[i]));     
     }
     return lowerstr;
@@ -137,26 +133,10 @@ std::string VowelGroupPronunciation(const char& v1, const char& v2)
     int i;
     std::string str1;
     std::string str2;
-    /*
-    std::string validvowelgrp="aiaeaoaueieuiuoiouui";
-    std::string  Vowgrp[]={"eye","eye","ow","ow","ay","eh-oo","ew","oy","ow","ooey"};
-    for(i=0; i< validvowelgrp.size();i=i+2)
-    {
-        if((v1==validvowelgrp[i]) && (v1==validvowelgrp[i+1]))
-           { str1 =  Vowgrp[i/2]; break;}
-    } */
     //use map
-    std::map<std::string,std::string> mymap;
-    mymap["ai"] = "eye";
-    mymap["ae"] = "eye";
-    mymap["ao"] = "ow" ;
-    mymap["au"] = "ow";
-    mymap["ei"] = "ay";
-    mymap["eu"] = "eh-oo";
-    mymap["iu"] = "ew" ;
-    mymap["oi"] = "oy";
-    mymap["ou"] = "ow";
-    mymap["ui"] = "ooey";
+    std::map<std::string,std::string> mymap={{"ai","eye"},{"ae","eye"},{"ao","ow"},{"au","ow"},
+                                             {"ei","ay"},{"eu","eh-oo"},
+                                             {"iu","ew"},{"oi","oy"},{"ou","ow"},{"ui","ooey"}};
     str2.push_back(v1);
     str2.push_back(v2);
     str1=mymap[str2];
@@ -165,16 +145,6 @@ std::string VowelGroupPronunciation(const char& v1, const char& v2)
 std::string SingleVowelPronunciation(const char& v)
 { // a -> ah, e-> eh, i-> ee, o->oh u->oo
   std::string str1;
-  /*
-  switch(v)
-  {
-    case 'a' : str1 = "ah"; break;
-    case 'e' : str1 = "eh"; break;
-    case 'i' : str1 = "ee"; break;
-    case 'o' : str1 = "oh"; break;
-    case 'u' : str1 = "oo"; break;
-    default:   str1 = "";
-  }*/
    //use map
     std::map<char,std::string> mymap;
     mymap['a'] = "ah";
@@ -232,7 +202,7 @@ int main(int argc, char *argv[])
 {
     std::string  str1,str2, strin;  
     vector<std::string> words;
-    int i=0;
+    unsigned long i=0;
     if(argc > 1)
     {
     //split argv[1] by whitespace
