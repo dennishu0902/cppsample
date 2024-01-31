@@ -61,7 +61,7 @@ bool IsValidWord(const std::string& word)
 bool IsValidCharacter(const char& c)
 {   
     int i;
-    std::string validch="aeioupkhlmn'";
+    std::string validch="aeioupkhlmnw'";
     //check if can find the input char in the group of validch
     for(i=0;i<validch.size();i++)
     {
@@ -165,6 +165,7 @@ std::string VowelGroupPronunciation(const char& v1, const char& v2)
 std::string SingleVowelPronunciation(const char& v)
 { // a -> ah, e-> eh, i-> ee, o->oh u->oo
   std::string str1;
+  /*
   switch(v)
   {
     case 'a' : str1 = "ah"; break;
@@ -173,7 +174,15 @@ std::string SingleVowelPronunciation(const char& v)
     case 'o' : str1 = "oh"; break;
     case 'u' : str1 = "oo"; break;
     default:   str1 = "";
-  }
+  }*/
+   //use map
+    std::map<char,std::string> mymap;
+    mymap['a'] = "ah";
+    mymap['e'] = "eh";
+    mymap['i'] = "ee" ;
+    mymap['o'] = "oh";
+    mymap['u'] = "oo";
+    str1 = mymap[v];
   return str1;
 }
 std::string Pronunciation(const std::string& word)
@@ -238,6 +247,7 @@ int main(int argc, char *argv[])
        else
          { 
             i++; 
+            if(str1.empty()==true) continue;//white space at first
             try{ 
                 str2 = GetPronunciation(str1);
                 std::cout << str2 ;
