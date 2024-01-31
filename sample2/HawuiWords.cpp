@@ -227,14 +227,14 @@ std::string Pronunciation(const std::string& word)
     }    
     return strpron;
 }
-
+ // How to use exception, https://cplusplus.com/forum/beginner/57892/
 int main(int argc, char *argv[])
 {
     std::string  str1,str2, strin;  
+    vector<std::string> words;
     int i=0;
     if(argc > 1)
     {
-    // How to use exception, https://cplusplus.com/forum/beginner/57892/
     //split argv[1] by whitespace
     strin = argv[1];
     while( i < strin.size())
@@ -248,30 +248,24 @@ int main(int argc, char *argv[])
          { 
             i++; 
             if(str1.empty()==true) continue;//white space at first
-            try{ 
-                str2 = GetPronunciation(str1);
-                std::cout << str2 ;
-                std::cout << " "  ;
-                str1.clear();
-             }
-            catch (const std::invalid_argument& ia) {
-	            std::cerr << "Invalid argument: " << ia.what() << '\n';
-                }
+            words.push_back(str1);
+            str1.clear();
         }
      }
      //the end word, no white space
-     if(str1.empty() !=true)
-       { 
+     if(str1.empty() !=true) words.push_back(str1);
+     for(i=0; i< words.size(); i++)
+     { 
         try{ 
-           str2 = GetPronunciation(str1);
-           std::cout << str2 << std::endl ;
-           }
+           str2 = GetPronunciation(words[i]);
+           std::cout << str2;
+           std::cout << " ";
+        }
        catch (const std::invalid_argument& ia) {
 	       std::cerr << "Invalid argument: " << ia.what() << '\n';
         }
-       }
-     else
-        std::cout << std::endl ;    
+     }
+      std::cout << std::endl ;    
     } 
     else
        std::cout << "Please add parameter" << std::endl;
