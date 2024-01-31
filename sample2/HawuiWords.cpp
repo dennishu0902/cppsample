@@ -91,8 +91,18 @@ bool IsVowelGroup(const char& v1, const char& v2)
    
     str1.push_back(v1);
     str1.push_back(v2);
-    for(i=0; i< vowgrp.size(); i++)
+    /* method 1
+     for(i=0; i< vowgrp.size(); i++)
       if(str1 == vowgrp[i]) return true;
+      */
+     /*method 2
+     for(auto it=vowgrp.begin();it<vowgrp.end();it++)
+        if(str1 == *it) return true;
+        */
+      
+      for(auto iter:vowgrp)
+        if(str1 == iter) return true;
+    
     return false;    
     
 }
