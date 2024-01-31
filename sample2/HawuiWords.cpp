@@ -4,6 +4,7 @@
 #include <vector>
 #include <cctype>
 #include <stdexcept>
+#include <map>
 
 using namespace std;
 //refernece link ASCII table
@@ -135,13 +136,30 @@ std::string VowelGroupPronunciation(const char& v1, const char& v2)
 {
     int i;
     std::string str1;
+    std::string str2;
+    /*
     std::string validvowelgrp="aiaeaoaueieuiuoiouui";
     std::string  Vowgrp[]={"eye","eye","ow","ow","ay","eh-oo","ew","oy","ow","ooey"};
     for(i=0; i< validvowelgrp.size();i=i+2)
     {
         if((v1==validvowelgrp[i]) && (v1==validvowelgrp[i+1]))
            { str1 =  Vowgrp[i/2]; break;}
-    }
+    } */
+    //use map
+    std::map<std::string,std::string> mymap;
+    mymap["ai"] = "eye";
+    mymap["ae"] = "eye";
+    mymap["ao"] = "ow" ;
+    mymap["au"] = "ow";
+    mymap["ei"] = "ay";
+    mymap["eu"] = "eh-oo";
+    mymap["iu"] = "ew" ;
+    mymap["oi"] = "oy";
+    mymap["ou"] = "ow";
+    mymap["ui"] = "ooey";
+    str2.push_back(v1);
+    str2.push_back(v2);
+    str1=mymap[str2];
     return str1;
 }
 std::string SingleVowelPronunciation(const char& v)
@@ -170,7 +188,7 @@ std::string Pronunciation(const std::string& word)
           strpron.append(VowelGroupPronunciation(word[i],word[i+1]));
           if( (i+2) < word.size()) //word[i+1] is not last char
             { if(word[i+2] != '\'')  // and word[i+2] is not '
-                 strpron.append(1,'-'); 
+                 strpron.append(1,'-'); // string& append (size_t n, char c);
             } 
           prev = word[i+1];
           i = i+2;
@@ -201,17 +219,50 @@ std::string Pronunciation(const std::string& word)
     return strpron;
 }
 
-int main()
+int main(int argc, char *argv[])
 {
-    std::string  str1="humuhumunukunukuapua'a";
-    std::string  str2;
+    std::string  str1,str2, strin;  
+    int i=0;
+    if(argc > 1)
+    {
     // How to use exception, https://cplusplus.com/forum/beginner/57892/
-    try{ 
-        str2 = GetPronunciation(str1);
-        std::cout << "Pronunciation" << std::endl;
-        std::cout << str2 << std::endl;
-    }
-    catch (const std::invalid_argument& ia) {
-	  std::cerr << "Invalid argument: " << ia.what() << '\n';
-  }
+    //split argv[1] by whitespace
+    strin = argv[1];
+    while( i < strin.size())
+     {
+       if(strin[i] != ' ') 
+           {
+             str1.push_back(strin[i]);
+             i++;
+           }
+       else
+         { 
+            i++; 
+            try{ 
+                str2 = GetPronunciation(str1);
+                std::cout << str2 ;
+                std::cout << " "  ;
+                str1.clear();
+             }
+            catch (const std::invalid_argument& ia) {
+	            std::cerr << "Invalid argument: " << ia.what() << '\n';
+                }
+        }
+     }
+     //the end word, no white space
+     if(str1.empty() !=true)
+       { 
+        try{ 
+           str2 = GetPronunciation(str1);
+           std::cout << str2 << std::endl ;
+           }
+       catch (const std::invalid_argument& ia) {
+	       std::cerr << "Invalid argument: " << ia.what() << '\n';
+        }
+       }
+     else
+        std::cout << std::endl ;    
+    } 
+    else
+       std::cout << "Please add parameter" << std::endl;
 }
