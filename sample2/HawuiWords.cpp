@@ -49,6 +49,7 @@ bool IsValidWord(const std::string& word)
 {
     int i=0;
     if(word.size()==0) return false;
+    //check each char if valid
     for(i=0; i< word.size(); i++)
     {
         if(IsValidCharacter(word[i])==false) return false;
@@ -60,6 +61,7 @@ bool IsValidCharacter(const char& c)
 {   
     int i;
     std::string validch="aeioupkhlmn'";
+    //check if can find the input char in the group of validch
     for(i=0;i<validch.size();i++)
     {
         if(c == validch[i]) return true;
@@ -71,6 +73,7 @@ bool IsVowel(const char& v)
 {
     int i;
     std::string validvowel="aeiou";
+    //check if can find the input char in the group of validvowel
     for(i=0;i<validvowel.size();i++)
     {
         if(v == validvowel[i]) return true;
@@ -82,6 +85,9 @@ bool IsVowelGroup(const char& v1, const char& v2)
 {
     int i;
     std::string validvowelgrp="aiaeaoaueieuiuoiouui";
+    //check if can find the input char in the group of validvowelgrp
+    //The adjacement two char is a vowelgrp
+    //For eaxmple,  ai ae ao .... 
     for(i=0;i<validvowelgrp.size();i=i+2)
     {
         if((v1 == validvowelgrp[i]) && (v2 == validvowelgrp[i+1])) return true;
@@ -162,8 +168,10 @@ std::string Pronunciation(const std::string& word)
         if(IsVowelGroup(word[i],word[i+1]))
         {
           strpron.append(VowelGroupPronunciation(word[i],word[i+1]));
-          if( (i+2) < word.size()) 
-            { if(word[i+2] != '\'') strpron.append(1,'-');}
+          if( (i+2) < word.size()) //word[i+1] is not last char
+            { if(word[i+2] != '\'')  // and word[i+2] is not '
+                 strpron.append(1,'-'); 
+            } 
           prev = word[i+1];
           i = i+2;
         }
@@ -197,7 +205,8 @@ int main()
 {
     std::string  str1="humuhumunukunukuapua'a";
     std::string  str2;
-    try{
+    // How to use exception, https://cplusplus.com/forum/beginner/57892/
+    try{ 
         str2 = GetPronunciation(str1);
         std::cout << "Pronunciation" << std::endl;
         std::cout << str2 << std::endl;
